@@ -1,0 +1,220 @@
+.selection-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 14px calc(96px + var(--safe-bottom));
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .logo-paws {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    .paw-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2.5px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      font-size: 26px;
+    }
+  }
+
+  h1 {
+    font-size: clamp(1.8rem, 6vw, 2.2rem);
+    color: var(--brown-dark);
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-weight: 900;
+  }
+
+  .subtitle {
+    color: var(--brown-medium);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.animals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.animal-card {
+  background: var(--animal-bg, #fff);
+  border: 3px solid transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  &:active {
+    transform: scale(0.96);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  &.selected {
+    border-color: var(--animal-border, #999);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  }
+
+  &.selected:active {
+    transform: scale(0.97);
+  }
+
+  .card-inner {
+    padding: 18px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .animal-emoji {
+    font-size: clamp(44px, 12vw, 56px);
+    line-height: 1;
+  }
+
+  .animal-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--animal-color, #333);
+    text-align: center;
+  }
+
+  .check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    background: var(--animal-border, #999);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &.selected .check-icon {
+    opacity: 1;
+  }
+
+  .pseudo-field {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .pseudo-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 2px solid var(--animal-border, #ccc);
+    border-radius: 10px;
+    // 16px minimum to prevent iOS auto-zoom on focus
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--animal-color, #333);
+    text-align: center;
+    outline: none;
+
+    &::placeholder {
+      color: var(--animal-border, #aaa);
+      opacity: 0.7;
+    }
+
+    &:focus {
+      background: white;
+      border-color: var(--animal-color, #999);
+    }
+  }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px calc(16px + var(--safe-bottom));
+  background: linear-gradient(to top, var(--bg-warm) 75%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.selected-info {
+  font-size: 0.85rem;
+  color: var(--brown-medium);
+  margin: 0;
+  font-weight: 600;
+}
+
+.btn-start {
+  width: 100%;
+  max-width: 360px;
+  background: var(--green-forest);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  // Minimum 52px height for comfortable touch target
+  min-height: 52px;
+  padding: 0 36px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 0 4px 14px rgba(74, 124, 89, 0.45);
+  letter-spacing: 0.3px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(74, 124, 89, 0.3);
+  }
+
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      background: #3a6248;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(74, 124, 89, 0.5);
+    }
+  }
+
+  &:disabled {
+    background: #B0BEC5;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.75;
+  }
+}

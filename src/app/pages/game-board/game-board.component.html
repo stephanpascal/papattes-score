@@ -1,0 +1,94 @@
+<div class="page game-board">
+
+  <header class="board-header">
+    <div class="header-top">
+      <h2>Manche {{ round() }}</h2>
+      <div class="header-actions">
+        <span class="goal-badge">Objectif : {{ victoryScore }} pts</span>
+        <button class="btn-restart" (click)="askRestart()" aria-label="Recommencer la partie">
+          ↺
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="rules-hint">
+    <button class="rules-toggle" (click)="toggleRules()">
+      <span>📋 Déroulement du tour</span>
+      <span class="rules-chevron" [class.open]="showRules()">▾</span>
+    </button>
+    @if (showRules()) {
+      <ol class="rules-steps">
+        <li><span>🎯</span><span>Lancez tous vos palets vers la rivière</span></li>
+        <li><span>🪵</span><span>Comptez les palets restants sur le terrain <em>+1 pt par palet</em></span></li>
+        <li><span>📍</span><span>Classez du plus proche au plus loin de la rivière <em>+3 / +2 / +1 pts</em></span></li>
+        <li><span>🏆</span><span>Le premier à <em>{{ victoryScore }} pts</em> gagne !</span></li>
+      </ol>
+    }
+  </div>
+
+  <div class="scores-list">
+    @for (p of scoreboard(); track p.animal.id) {
+      <div
+        class="score-card"
+        [class.is-leader]="p.rank === 1"
+        [style.--animal-color]="p.animal.color"
+        [style.--animal-bg]="p.animal.bgColor"
+        [style.--animal-border]="p.animal.borderColor"
+      >
+        <div class="card-body">
+          <div class="rank-col">
+            <span class="rank-badge" [class.rank-first]="p.rank === 1">
+              {{ p.rank }}
+            </span>
+          </div>
+
+          <span class="animal-emoji">{{ p.animal.emoji }}</span>
+
+          <div class="player-info">
+            <span class="pseudo">{{ p.pseudo }}</span>
+            <span class="animal-name">{{ p.animal.name }}</span>
+          </div>
+
+          <div class="score-display">
+            <span class="score-num">{{ p.score }}</span>
+            <span class="score-over">/ {{ victoryScore }}</span>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="p.percent"></div>
+          @if (p.percent > 12) {
+            <span class="progress-pct">{{ p.percent }}%</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="board-footer">
+    <button class="btn-end-round" (click)="endRound()">
+      Terminer la manche 🏁
+    </button>
+  </div>
+
+</div>
+
+<!-- Modale de confirmation -->
+@if (showConfirm()) {
+  <div class="confirm-overlay" (click)="cancelRestart()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()">
+      <div class="confirm-icon">↺</div>
+      <h3>Recommencer la partie ?</h3>
+      <p>Les scores actuels seront définitivement perdus.</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" (click)="cancelRestart()">
+          Annuler
+        </button>
+        <button class="btn-confirm-restart" (click)="confirmRestart()">
+          Recommencer
+        </button>
+      </div>
+    </div>
+  </div>
+}

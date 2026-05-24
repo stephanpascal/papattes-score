@@ -1,0 +1,58 @@
+<div class="page selection-page">
+  <header class="header">
+    <div class="logo-paws">
+      @for (card of cards(); track card.animal.id) {
+        <span
+          class="paw-badge"
+          [style.background]="card.animal.bgColor"
+          [style.border-color]="card.animal.borderColor"
+        >{{ card.animal.emoji }}</span>
+      }
+    </div>
+    <h1>Les Papattes</h1>
+    <p class="subtitle">Choisissez vos animaux (2 minimum)</p>
+  </header>
+
+  <div class="animals-grid">
+    @for (card of cards(); track card.animal.id; let i = $index) {
+      <div
+        class="animal-card"
+        [class.selected]="card.selected"
+        [style.--animal-color]="card.animal.color"
+        [style.--animal-bg]="card.animal.bgColor"
+        [style.--animal-border]="card.animal.borderColor"
+        (click)="toggleCard(i)"
+      >
+        <div class="card-inner">
+          <div class="animal-emoji">{{ card.animal.emoji }}</div>
+          <div class="animal-name">{{ card.animal.name }}</div>
+          <div class="check-icon">✓</div>
+          @if (card.selected) {
+            <div class="pseudo-field" (click)="$event.stopPropagation()">
+              <input
+                type="text"
+                [placeholder]="card.animal.name"
+                [(ngModel)]="card.pseudo"
+                maxlength="15"
+                class="pseudo-input"
+              />
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="footer">
+    <p class="selected-info">
+      {{ selectedCount() }} animal{{ selectedCount() > 1 ? 'x' : '' }} sélectionné{{ selectedCount() > 1 ? 's' : '' }}
+    </p>
+    <button
+      class="btn-start"
+      [disabled]="!canStart()"
+      (click)="startGame()"
+    >
+      Commencer la partie 🎯
+    </button>
+  </div>
+</div>

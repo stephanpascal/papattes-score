@@ -1,0 +1,360 @@
+.scoring-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px calc(24px + var(--safe-bottom));
+}
+
+.scoring-header {
+  text-align: center;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: clamp(1.4rem, 5vw, 1.7rem);
+    color: var(--brown-dark);
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+  }
+}
+
+.step-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+// ─── Titre d'étape ────────────────────────────────────────
+.step-title {
+  text-align: center;
+
+  .step-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  h3 {
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    color: var(--brown-dark);
+    margin: 0 0 4px;
+    line-height: 1.45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .bonus-pill {
+    display: inline-block;
+    background: var(--green-forest);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 2px 9px;
+    border-radius: 20px;
+    vertical-align: middle;
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    color: var(--brown-medium);
+    margin: 0;
+    font-style: italic;
+  }
+
+  .bonus-hint {
+    font-size: 0.85rem;
+    color: var(--green-forest);
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+// ─── Phase comptage ───────────────────────────────────────
+.counters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.counter-card {
+  background: var(--animal-bg, #fff);
+  border-radius: 16px;
+  padding: 10px 14px 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 5px solid var(--animal-border, #ccc);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+
+  .counter-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+
+    .emoji { font-size: clamp(26px, 7vw, 32px); line-height: 1; flex-shrink: 0; }
+    .name  { font-weight: 700; color: var(--animal-color, #333); font-size: clamp(0.9rem, 3.5vw, 1.05rem); }
+  }
+
+  .counter-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .btn-counter {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2.5px solid var(--animal-border, #ccc);
+    background: white;
+    color: var(--animal-color, #333);
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, background 0.12s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    font-weight: 700;
+
+    &:active { transform: scale(0.88); background: var(--animal-bg, #f0f0f0); }
+
+    @media (hover: hover) {
+      &:hover { background: var(--animal-bg, #f5f5f5); transform: scale(1.08); }
+    }
+  }
+
+  .counter-value {
+    font-size: clamp(1.7rem, 6vw, 2rem);
+    font-weight: 900;
+    color: var(--animal-color, #333);
+    min-width: 32px;
+    text-align: center;
+  }
+}
+
+// ─── Grille de classement ─────────────────────────────────
+.choices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.choice-btn {
+  background: var(--animal-bg, #fff);
+  border: 3px solid var(--animal-border, #ccc);
+  border-radius: 18px;
+  padding: clamp(18px, 4.5vw, 26px) 10px clamp(14px, 3.5vw, 20px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease, border-color 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  // ── État normal (non classé, disponible) ─────────────────
+  &:active:not([disabled]):not(.is-ranked) {
+    transform: scale(0.94);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (hover: hover) {
+    &:hover:not([disabled]):not(.is-ranked) {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+      border-color: var(--animal-color, #999);
+    }
+  }
+
+  // ── État classé : reste en place, indique qu'on peut retirer ──
+  &.is-ranked {
+    border-color: var(--animal-color, #888);
+    border-width: 3px;
+    opacity: 0.55;
+    cursor: pointer; // toujours cliquable pour décocher
+
+    &:active {
+      transform: scale(0.96);
+      opacity: 0.45;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.7;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+
+  // ── État verrouillé : max atteint, non classé → inaccessible ─
+  &.is-locked {
+    opacity: 0.22;
+    cursor: not-allowed;
+    pointer-events: none;
+    border-style: dashed;
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  // Badge de rang (sur carte classée)
+  .rank-badge {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--animal-color, #555);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .rank-x {
+      font-size: 0.85rem;
+      opacity: 0.75;
+      font-weight: 400;
+      line-height: 1;
+    }
+  }
+
+  .choice-emoji {
+    font-size: clamp(40px, 10vw, 50px);
+    line-height: 1;
+  }
+
+  .choice-name {
+    font-weight: 700;
+    color: var(--animal-color, #333);
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    text-align: center;
+  }
+}
+
+// ─── Phase résumé ──────────────────────────────────────────
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-row {
+  background: var(--animal-bg, #fff);
+  border-left: 5px solid var(--animal-border, #ccc);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  .result-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .result-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+
+    .emoji { font-size: clamp(24px, 6vw, 28px); flex-shrink: 0; }
+    .name  { font-weight: 700; color: var(--animal-color, #333); font-size: clamp(0.9rem, 3.5vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  }
+
+  .result-total {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-shrink: 0;
+
+    .gained    { font-size: 1.3rem; font-weight: 900; color: var(--green-forest); }
+    .new-score { font-size: 0.8rem; color: var(--brown-medium); font-weight: 600; }
+  }
+
+  .result-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .detail-chip {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--brown-medium);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    &.proximity {
+      background: rgba(74, 124, 89, 0.12);
+      color: var(--green-forest);
+    }
+  }
+}
+
+// ─── Bouton principal ──────────────────────────────────────
+.step-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.btn-primary {
+  width: 100%;
+  max-width: 360px;
+  background: var(--green-forest);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  min-height: 52px;
+  padding: 0 40px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+  box-shadow: 0 4px 14px rgba(74, 124, 89, 0.42);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
+  &:disabled {
+    background: #B0BEC5;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(74, 124, 89, 0.28);
+  }
+
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      background: #3a6248;
+      transform: translateY(-2px);
+    }
+  }
+}

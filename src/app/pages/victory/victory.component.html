@@ -1,0 +1,74 @@
+<div class="page victory-page">
+
+  <!-- TIE BREAK FINAL -->
+  @if (tieBreakPhase()) {
+    <div class="tie-break-container">
+      <div class="tie-icon">⚖️</div>
+      <h2>Égalité !</h2>
+      <p class="tie-subtitle">
+        Plusieurs animaux ont atteint {{ winners()[0].score }} points.
+        Effectuez un lancer de départage — qui était le plus proche de la rivière ?
+      </p>
+
+      <div class="tie-choices">
+        @for (player of winners(); track player.animal.id) {
+          <button
+            class="tie-choice-btn"
+            [style.--animal-color]="player.animal.color"
+            [style.--animal-bg]="player.animal.bgColor"
+            [style.--animal-border]="player.animal.borderColor"
+            (click)="resolveTie(player)"
+          >
+            <span class="choice-emoji">{{ player.animal.emoji }}</span>
+            <span class="choice-name">{{ player.pseudo }}</span>
+            <span class="choice-score">{{ player.score }} pts</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- VICTOIRE -->
+  @if (!tieBreakPhase() && winner()) {
+    <div class="winner-container">
+      <div class="confetti-area">🎉🎊🏆🎊🎉</div>
+
+      <div
+        class="winner-card"
+        [style.--animal-color]="winner()!.animal.color"
+        [style.--animal-bg]="winner()!.animal.bgColor"
+        [style.--animal-border]="winner()!.animal.borderColor"
+      >
+        <div class="winner-emoji">{{ winner()!.animal.emoji }}</div>
+        <div class="winner-label">Victoire !</div>
+        <div class="winner-name">{{ winner()!.pseudo }}</div>
+        <div class="winner-score">{{ winner()!.score }} points</div>
+      </div>
+
+      <div class="final-scores">
+        <h3>Classement final</h3>
+        <div class="scores-list">
+          @for (player of sortedPlayers(); track player.animal.id) {
+            <div
+              class="score-row"
+              [class.rank-1]="player.rank === 1"
+              [class.rank-2]="player.rank === 2"
+              [class.rank-3]="player.rank === 3"
+              [style.--animal-color]="player.animal.color"
+              [style.--animal-border]="player.animal.borderColor"
+            >
+              <span class="rank-emoji">{{ player.medal ?? '' }}</span>
+              <span class="player-emoji">{{ player.animal.emoji }}</span>
+              <span class="player-name">{{ player.pseudo }}</span>
+              <span class="player-score">{{ player.score }} pts</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <button class="btn-restart" (click)="restart()">
+        🔄 Nouvelle partie
+      </button>
+    </div>
+  }
+</div>

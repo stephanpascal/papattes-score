@@ -1,0 +1,139 @@
+<div class="page scoring-page">
+  <header class="scoring-header">
+    <h2>Manche {{ round() }}</h2>
+  </header>
+
+  <!-- PHASE 1 : Compter les palets -->
+  @if (phase() === 'count') {
+    <div class="step-block">
+      <div class="step-title">
+        <span class="step-icon">🪵</span>
+        <h3>Combien de papattes restent sur le terrain ?</h3>
+      </div>
+
+      <div class="counters-list">
+        @for (player of players(); track player.animal.id) {
+          <div
+            class="counter-card"
+            [style.--animal-color]="player.animal.color"
+            [style.--animal-bg]="player.animal.bgColor"
+            [style.--animal-border]="player.animal.borderColor"
+          >
+            <div class="counter-left">
+              <span class="emoji">{{ player.animal.emoji }}</span>
+              <span class="name">{{ player.pseudo }}</span>
+            </div>
+            <div class="counter-control">
+              <button class="btn-counter" (click)="decrementPalets(player.animal.id)">−</button>
+              <span class="counter-value">{{ paletsMap()[player.animal.id] }}</span>
+              <button class="btn-counter" (click)="incrementPalets(player.animal.id)">+</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="step-footer">
+        <button class="btn-primary" (click)="validateCount()">Valider ✓</button>
+      </div>
+    </div>
+  }
+
+  <!-- PHASE 2 : Classement de proximité -->
+  @if (phase() === 'rank') {
+    <div class="step-block">
+      <div class="step-title">
+        <span class="step-icon">🎯</span>
+        @if (!canValidate()) {
+          <h3>
+            Tapez l'animal en <strong>{{ nextRankLabel() }}</strong> position
+            <span class="bonus-pill">+{{ nextRankBonus() }} pts</span>
+          </h3>
+          <p class="hint">Retapez une carte classée pour annuler son rang</p>
+        } @else {
+          <h3>Classement complet !</h3>
+          <p class="hint">Vérifiez puis validez</p>
+        }
+      </div>
+
+      <div class="choices-grid">
+        @for (player of playersWithPalets(); track player.animal.id) {
+          <button
+            class="choice-btn"
+            [class.is-ranked]="isRanked(player.animal.id)"
+            [class.is-locked]="isLocked(player.animal.id)"
+            [disabled]="isLocked(player.animal.id)"
+            [style.--animal-color]="player.animal.color"
+            [style.--animal-bg]="player.animal.bgColor"
+            [style.--animal-border]="player.animal.borderColor"
+            (click)="tapCard(player.animal.id)"
+          >
+            @if (isRanked(player.animal.id)) {
+              <span class="rank-badge">
+                {{ getRankLabel(player.animal.id) }}
+                <span class="rank-x">×</span>
+              </span>
+            }
+            <span class="choice-emoji">{{ player.animal.emoji }}</span>
+            <span class="choice-name">{{ player.pseudo }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="step-footer">
+        <button
+          class="btn-primary"
+          [disabled]="!canValidate()"
+          (click)="confirmRanks()"
+        >
+          Valider ✓
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- PHASE RÉSUMÉ -->
+  @if (phase() === 'summary') {
+    <div class="step-block">
+      <div class="step-title">
+        <span class="step-icon">📋</span>
+        <h3>Résultats de la manche</h3>
+      </div>
+
+      <div class="results-list">
+        @for (result of roundResults(); track result.player.animal.id) {
+          <div
+            class="result-row"
+            [style.--animal-color]="result.player.animal.color"
+            [style.--animal-bg]="result.player.animal.bgColor"
+            [style.--animal-border]="result.player.animal.borderColor"
+          >
+            <div class="result-top">
+              <div class="result-left">
+                <span class="emoji">{{ result.player.animal.emoji }}</span>
+                <span class="name">{{ result.player.pseudo }}</span>
+              </div>
+              <div class="result-total">
+                <span class="gained">+{{ result.totalGained }}</span>
+                <span class="new-score">→ {{ result.player.score + result.totalGained }} pts</span>
+              </div>
+            </div>
+            @if (result.basePoints > 0 || result.proximityBonus > 0) {
+              <div class="result-detail">
+                @if (result.basePoints > 0) {
+                  <span class="detail-chip">{{ result.basePoints }} palet{{ result.basePoints > 1 ? 's' : '' }}</span>
+                }
+                @if (result.proximityBonus > 0) {
+                  <span class="detail-chip proximity">+{{ result.proximityBonus }} proximité</span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="step-footer">
+        <button class="btn-primary" (click)="confirmSummary()">Continuer →</button>
+      </div>
+    </div>
+  }
+</div>
