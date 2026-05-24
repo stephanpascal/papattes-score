@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1779649929191,
+  "timestamp": 1779651236130,
   "index": "/papattes-score/index.html",
   "assetGroups": [
     {
@@ -43,14 +43,14 @@
   "dataGroups": [],
   "hashTable": {
     "/papattes-score/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/papattes-score/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
-    "/papattes-score/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
-    "/papattes-score/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
-    "/papattes-score/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
-    "/papattes-score/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
-    "/papattes-score/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
-    "/papattes-score/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
-    "/papattes-score/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/papattes-score/icons/icon-128x128.png": "1bb0577995ee0eced587fe2ff13a8175d87144d5",
+    "/papattes-score/icons/icon-144x144.png": "021503c641b3ec0a9112c1ebd231506077aff502",
+    "/papattes-score/icons/icon-152x152.png": "740eb48f54f1b3ca4cefbda320725c12e869f366",
+    "/papattes-score/icons/icon-192x192.png": "d28590ab84baf547879234c7d1ebd940751c9216",
+    "/papattes-score/icons/icon-384x384.png": "866707e6558f5f485dbbc9e108ce07374cd8669c",
+    "/papattes-score/icons/icon-512x512.png": "8937eb97b5bdc54057164a1b98e76247368bf70c",
+    "/papattes-score/icons/icon-72x72.png": "5c485990ad9e368dcf4025bb465c27b07791025a",
+    "/papattes-score/icons/icon-96x96.png": "e18d676306783ce930e964ca4270932b947b470a",
     "/papattes-score/index.html": "6d62329fb71cc7442fcafe8a0c3d57ac5ec67c7d",
     "/papattes-score/main-VXEVBKXA.js": "33d9248c8622c02d6e2753e3b4620b6ea94416cc",
     "/papattes-score/manifest.webmanifest": "60fd61581dc2afe4435c4b676757f7c448699842",
