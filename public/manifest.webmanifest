@@ -2,8 +2,8 @@
   "name": "Papates Claude",
   "short_name": "Papates",
   "display": "standalone",
-  "scope": "/papates-claude/",
-  "start_url": "/papates-claude/",
+  "scope": "/papattes-score/",
+  "start_url": "/papattes-score/",
   "theme_color": "#cc26d5",
   "background_color": "#ffffff",
   "icons": [

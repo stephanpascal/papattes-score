@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --base-href /papates-claude/ && npx angular-cli-ghpages --dir=dist/papates-claude/browser"
+    "deploy": "ng build --base-href /papattes-score/ && npx angular-cli-ghpages --dir=dist/papates-claude/browser"
   },
   "private": true,
   "dependencies": {

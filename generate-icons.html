@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Générateur d'icônes PWA</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f5f5f5; }
+    h1 { margin-bottom: 0.5rem; }
+    .controls { display: flex; gap: 1rem; align-items: center; margin: 1.5rem 0; flex-wrap: wrap; }
+    label { font-weight: bold; }
+    input[type=color] { width: 48px; height: 36px; border: none; cursor: pointer; border-radius: 6px; }
+    input[type=range] { width: 120px; }
+    button { padding: 0.75rem 1.5rem; background: #cc26d5; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #a81eb8; }
+    .preview { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 2rem; }
+    .preview-item { text-align: center; font-size: 0.75rem; color: #555; }
+    canvas { display: block; border-radius: 16%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  </style>
+</head>
+<body>
+  <h1>🦁 Générateur d'icônes PWA</h1>
+  <p>Personnalise l'icône puis clique sur <strong>Télécharger toutes les icônes</strong>.</p>
+
+  <div class="controls">
+    <label>Couleur de fond :
+      <input type="color" id="bgColor" value="#cc26d5">
+    </label>
+    <label>Taille emoji :
+      <input type="range" id="emojiSize" min="40" max="90" value="70"> <span id="emojiSizeVal">70</span>%
+    </label>
+    <label>Décalage vertical :
+      <input type="range" id="offsetY" min="-20" max="20" value="3"> <span id="offsetYVal">3</span>%
+    </label>
+  </div>
+
+  <div class="preview" id="preview"></div>
+
+  <button onclick="downloadAll()">Télécharger toutes les icônes (8 fichiers)</button>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const emoji = '🦁';
+
+    function drawIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const bg = document.getElementById('bgColor').value;
+      const emojiPct = parseInt(document.getElementById('emojiSize').value) / 100;
+      const offsetPct = parseInt(document.getElementById('offsetY').value) / 100;
+
+      // Background arrondi
+      const r = size * 0.22;
+      ctx.fillStyle = bg;
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.lineTo(size - r, 0);
+      ctx.quadraticCurveTo(size, 0, size, r);
+      ctx.lineTo(size, size - r);
+      ctx.quadraticCurveTo(size, size, size - r, size);
+      ctx.lineTo(r, size);
+      ctx.quadraticCurveTo(0, size, 0, size - r);
+      ctx.lineTo(0, r);
+      ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // Emoji
+      const fontSize = Math.floor(size * emojiPct);
+      ctx.font = `${fontSize}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, size / 2, size / 2 + size * offsetPct);
+
+      return canvas;
+    }
+
+    function updatePreviews() {
+      const container = document.getElementById('preview');
+      container.innerHTML = '';
+      [72, 192, 512].forEach(size => {
+        const canvas = drawIcon(size);
+        const displaySize = size === 512 ? 96 : size === 192 ? 64 : 48;
+        canvas.style.width = displaySize + 'px';
+        canvas.style.height = displaySize + 'px';
+        const wrap = document.createElement('div');
+        wrap.className = 'preview-item';
+        wrap.appendChild(canvas);
+        wrap.appendChild(document.createTextNode(`${size}×${size}`));
+        container.appendChild(wrap);
+      });
+    }
+
+    function downloadAll() {
+      sizes.forEach((size, i) => {
+        setTimeout(() => {
+          const canvas = drawIcon(size);
+          const a = document.createElement('a');
+          a.download = `icon-${size}x${size}.png`;
+          a.href = canvas.toDataURL('image/png');
+          a.click();
+        }, i * 150);
+      });
+    }
+
+    document.getElementById('bgColor').addEventListener('input', updatePreviews);
+    document.getElementById('emojiSize').addEventListener('input', () => {
+      document.getElementById('emojiSizeVal').textContent = document.getElementById('emojiSize').value;
+      updatePreviews();
+    });
+    document.getElementById('offsetY').addEventListener('input', () => {
+      document.getElementById('offsetYVal').textContent = document.getElementById('offsetY').value;
+      updatePreviews();
+    });
+
+    updatePreviews();
+  </script>
+</body>
+</html>
